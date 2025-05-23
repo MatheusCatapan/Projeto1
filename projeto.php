@@ -39,3 +39,56 @@
     function limparTela() {
         system('clear');
     }
+
+    function pausa() {
+        echo "\nPressione ENTER para continuar...";
+        fgets(STDIN);
+    }    
+
+    function login() {
+        limparTela();
+        echo "Fazer login";
+        echo "Sair";
+    }
+
+
+    function menu() {
+        limparTela();
+        echo "///// MENU PRINCIPAL /////";
+    }
+
+    do {
+        echo "Escolha uma opção:\n";
+        echo "1 - Fazer login\n";
+        echo "2 - Cadastrar usuário\n";
+        echo "3 - Sair\n";
+        echo "Opção: ";
+        $escolha = trim(fgets(STDIN));
+    
+        switch ($escolha) {
+            case 1:
+                echo "Insira seu usuário: ";
+                $usuario = trim(fgets(STDIN));
+                echo "Insira sua senha: ";
+                $senha = trim(fgets(STDIN));
+            case 2:
+                echo "Digite o nome do usuário a ser cadastrado: ";
+                $usuario = trim(fgets(STDIN));
+                echo "Digite a senha: ";
+                $senha = trim(fgets(STDIN));
+                $mensagem = cadastrarUsuario($usuario, $senha);
+                echo $mensagem . "\n";
+                pausa();
+                break;
+    
+            case 3:
+                echo "Saindo...\n";
+                exit;
+    
+            default:
+                echo "Opção inválida!\n";
+                pausa();
+                break;
+        }
+    
+    } while (true);
