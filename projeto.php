@@ -23,14 +23,23 @@
     } 
 
     function cadastrarUsuario($usuario, $senha) {
-        $usuarios = file ('usuarios.txt', FILE_IGNORE_NEW_LINES, FILE_APPEND);
+        $arquivo = 'usuarios.txt';
+        if (file_exists($arquivo)) {
+            $usuarios = file($arquivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        } else {
+            $usuarios = [];
+        }
         foreach ($usuarios as $linha) {
             list ($u, $s) = explode(';', $linha);
             if ($u === $usuario) {
-            return false;
-    }
-          } return true;
-    }
+                return false;
+            }
+        }
+        $linhaNova = $usuario . ';' . $senha . "\n";
+        file_put_contents($arquivo, $linhaNova, FILE_APPEND);
+        return true;
+    }   
+
 
     function vendaRealizada($valor, $nomedoItem) {
         file_put_contents('log.txt', date('Y-m-d H:i:s') . " - Venda: $nomedoItem | Valor: R$ $valor" . PHP_EOL, FILE_APPEND);
@@ -71,13 +80,23 @@
                 $usuario = trim(fgets(STDIN));
                 echo "Insira sua senha: ";
                 $senha = trim(fgets(STDIN));
+                if (realizarLogin($usuario,$senha)) {
+                    echo "login";
+                } else {
+                    echo "erro";
+                }
+                pausa();
+                break;
             case 2:
                 echo "Digite o nome do usuário a ser cadastrado: ";
                 $usuario = trim(fgets(STDIN));
                 echo "Digite a senha: ";
-                $senha = trim(fgets(STDIN));
-                $mensagem = cadastrarUsuario($usuario, $senha);
-                echo $mensagem . "\n";
+                $senha = trim(fgets(STDIN));     
+                if (cadastrarUsuario($usuario,$senha)) {
+                    echo "Usuário cadastrado com sucesso!\n";
+                }else {
+                    echo "Erro: Esse usuário já foi cadastrado!\n";
+                }
                 pausa();
                 break;
     
