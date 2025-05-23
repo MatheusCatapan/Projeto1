@@ -23,11 +23,19 @@
     } 
 
     function cadastrarUsuario($usuario, $senha) {
-        $usuarios = file ('usuarios.txt', FILE_IGNORE_NEW_LINES);
+        $usuarios = file ('usuarios.txt', FILE_IGNORE_NEW_LINES, FILE_APPEND);
         foreach ($usuarios as $linha) {
             list ($u, $s) = explode(';', $linha);
             if ($u === $usuario) {
             return false;
     }
           } return true;
+    }
+
+    function vendaRealizada($valor, $nomedoItem) {
+        file_put_contents('log.txt', date('Y-m-d H:i:s') . " - Venda: $nomedoItem | Valor: R$ $valor" . PHP_EOL, FILE_APPEND);
+    }
+
+    function limparTela() {
+        system('clear');
     }
