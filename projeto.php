@@ -1,19 +1,21 @@
 <?php 
 
 
-    function realizarLogin($usuario, $senha) {
+function realizarLogin($usuario, $senha) {
     $usuarios = file('usuarios.txt', FILE_IGNORE_NEW_LINES);  
-        foreach ($usuarios as $linha) {
-            list ($u, $s) = explode(';', $linha);
-            if ($u === $usuario && $s ===$senha) {
-                file_put_contents('sessao.txt', $usuario); 
-                $dataHora = date('d/m/Y H:i:s');
-                file_put_contents('sessao.txt', $dataHora);         
-                logar("Usuário $usuario realizou login.");
-                return true;            
+
+    foreach ($usuarios as $linha) {
+        list($u, $s) = explode(';', $linha);
+        if ($u === $usuario && $s === $senha) {               
+            $dataHora = date('d/m/Y H:i:s');
+            $conteudo = "$dataHora $usuario\n";
+
+            file_put_contents('sessao.txt', $conteudo, FILE_APPEND);
+            return true;            
         }
     }
-       return false;
+
+    return false;
 }
 
     function logar($mensagem) {
